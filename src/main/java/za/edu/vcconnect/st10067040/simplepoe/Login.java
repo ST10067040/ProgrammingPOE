@@ -18,14 +18,5 @@ public class Login{
             Main.registeredUser.setLoggedIn(true);
         }
 
-        // print the users' login status
-        System.out.println(Main.registeredUser.returnLoginStatus());
-
-        // welcome the user if they have logged in, else prompt the user to login again
-        if(Main.registeredUser.isLoggedIn()){
-            System.out.println("Welcome " + Main.registeredUser.getFirstname()+", " + Main.registeredUser.getLastname() + " it is great to see you.");
-        } else {
-            Main.loginUser();
-        }
     }
 }

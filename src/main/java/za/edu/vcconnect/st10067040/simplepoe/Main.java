@@ -1,7 +1,11 @@
 package za.edu.vcconnect.st10067040.simplepoe;
 
+import javax.swing.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import static za.edu.vcconnect.st10067040.simplepoe.Task.checkTaskDescription;
 
 /*
  * @author Chelden Booysen (ST10067040)
@@ -25,7 +29,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
 
-        System.out.println("Welcome!\nPress 3 at anytime to exit the program\nPlease Register:");
+        System.out.println("Welcome!\nPlease Register:");
         System.out.print("First Name:\t");
         firstname = input.next();
         System.out.print("Last Name:\t");
@@ -91,6 +95,148 @@ public class Main {
         password = input.next();
 
         new Login(username, password);
-    }
+        // print the users' login status
+        System.out.println(Main.registeredUser.returnLoginStatus());
 
+        // welcome the user if they have logged in, else prompt the user to login again
+        if (registeredUser.isLoggedIn()) {
+            System.out.println("Welcome " + Main.registeredUser.getFirstname() + ", " + Main.registeredUser.getLastname() + " it is great to see you.");
+            System.out.println("Welcome to EasyKanBan.");
+
+
+            // infinite while loop
+            while (true) {
+                System.out.println("1.Add Tasks 2.Show Report 3.Quit");
+                int option;
+
+
+                // test if the user entered a number, if not notify the user rerun the program
+                try {
+                    option = input.nextInt();
+                } catch (InputMismatchException ignored) {
+                    System.out.println("Please enter a number regarding what you would like to select! Process will exit.");
+                    return;
+                }
+
+                // switch statement for users input
+                switch (option) {
+                    // add task option
+                    case 1:
+
+                        System.out.println("Please specify the amount of tasks you would like to add consecutively:");
+                        int numberOfTasks = input.nextInt();
+
+                        // while loop to allow the user to input multiple tasks consecutively
+                        while (numberOfTasks > 0) {
+                            Scanner sc = new Scanner(System.in);
+                            Task newTask = new Task();
+
+                            // set task name from users input
+                            System.out.println("Please enter the name of the task you would like to add:");
+                            newTask.setTaskName(sc.nextLine());
+
+                            // set task description from users input
+                            System.out.println("Please enter the description of the task you would like to add:");
+                            // test if the description matches all requirements, if not notify the user
+                            String description = sc.nextLine();
+                            while (!checkTaskDescription(description)) {
+                                System.out.println("Please enter a task description containing less than 50 characters.");
+                                description = sc.nextLine();
+                            }
+                            newTask.setTaskDescription(description);
+
+                            // set task developer details from users input
+                            System.out.println("Please enter developer details.");
+                            newTask.setDeveloperDetails(sc.nextLine());
+
+                            // set task duration from users input
+                            System.out.println("Please enter task duration. (hours)");
+                            newTask.setTaskDuration(sc.nextFloat());
+
+                            // prompt the user to select one of the following task statuses
+                            System.out.println("Please select a task status\n1. To Do\n2. Done\n3. Doing");
+                            // switch statement for users input
+                            switch (sc.nextInt()) {
+
+                                // set task status to TODO
+                                case 1:
+                                    newTask.setTaskStatus(TaskStatus.TODO);
+                                    break;
+
+                                // set task status to DONE
+                                case 2:
+                                    newTask.setTaskStatus(TaskStatus.DONE);
+                                    break;
+
+                                // set task status to DOING
+                                case 3:
+                                    newTask.setTaskStatus(TaskStatus.DOING);
+                                    break;
+
+                                // default parameter in case something goes wrong
+                                default:
+                                    System.err.println("Something went terribly wrong :(");
+                                    System.exit(0);
+                            }
+
+                            // set task number based on the number of the saved tasks in the hash set
+                            newTask.setTaskNumber(Task.savedTasks.size());
+
+
+                            // split the task and developer strings into a character arrays
+                            char[] taskChars = newTask.getTaskName().toUpperCase().toCharArray();
+                            char[] developerChars = newTask.getDeveloperDetails().toUpperCase().toCharArray();
+
+                            // set this task id with the first 2 chars of the task name
+                            // and the last 3 chars of the developer details
+                            newTask.setTaskId(
+                                    taskChars[0] + "" + taskChars[1] + ":" + newTask.getTaskNumber() + ":" +
+                                            developerChars[developerChars.length - 3] +
+                                            developerChars[developerChars.length - 2] +
+                                            developerChars[developerChars.length - 1]
+                            );
+
+                            // add the task to the saved tasks array
+                            Task.savedTasks.add(newTask);
+                            System.out.println("Your task was successfully saved.");
+                            // display all details back to the user using a JOptionPane
+                            JOptionPane.showMessageDialog(null,
+                                    "Task Status: " + newTask.getTaskStatus().toString() +
+                                            "\nDeveloper Details: " + newTask.getDeveloperDetails() +
+                                            "\nTask Number: " + newTask.getTaskNumber() +
+                                            "\nTask Name: " + newTask.getTaskName() +
+                                            "\nTask Description: " + newTask.getTaskDescription() +
+                                            "\nTask ID: " + newTask.getTaskId() +
+                                            "\nTask Duration: " + newTask.getTaskDuration(),
+                                    "Task Details", JOptionPane.PLAIN_MESSAGE);
+
+                            // minus one from the number of tasks the user should still enter
+                            numberOfTasks--;
+                        }
+                        // break out of the loop once the user has inputted the specified amount of tasks
+                        break;
+
+                    // show report option
+                    case 2:
+                        // TODO write this still
+                        System.out.println("Coming soon.");
+                        break;
+                    // quit option
+                    case 3:
+                        // exit the program with exit code 0
+                        System.out.println("Exiting with exit code 0");
+                        System.exit(0);
+                        break;
+
+                    // default option in case something goes wrong
+                    default:
+                        System.err.println("Something went terribly wrong, exiting with exit code 1");
+                        System.exit(1);
+
+                }
+            }
+        } else {
+            loginUser();
+        }
+    }
 }

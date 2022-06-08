@@ -40,7 +40,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>za.edu.vcconnect.st10067040.poe.Main</mainClass>
+                                    <mainClass>za.edu.vcconnect.st10067040.simplepoe.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

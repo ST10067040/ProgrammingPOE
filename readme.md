@@ -3,7 +3,7 @@
 #### I have precompiled both jars for you to test, you can find them in the [releases](https://github.com/ST10067040/ProgrammingPOE/releases) tab, or in the project under `target/`
 #### The reason there are 2 jar files is, because you said my original one is too complex, so I made a second one for you to mark part one with.
 ### Usages:
-#### Simple POE (Please use this one for marking part one)
+#### Simple POE (Please use this one for marking part two)
 ```
 java -jar SimplePOE_ST10067040.jar
 ```
@@ -13,7 +13,7 @@ java -jar ComplexPOE_ST10067040.jar
 ```
 ##### Please make sure you run this command in the same directory as the jar!
 
-## Screenshots
+## Screenshots (Part One)
 
 #### Simple POE:
 <img height="70%" width= "70%" alt="POE" src="https://imgur.com/PEA06nR.png" />

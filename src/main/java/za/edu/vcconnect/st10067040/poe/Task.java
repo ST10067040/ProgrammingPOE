@@ -1,4 +1,4 @@
-package za.edu.vcconnect.st10067040.simplepoe;
+package za.edu.vcconnect.st10067040.poe;
 
 import java.util.HashSet;
 import java.util.Set;
